@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yangtze University Canteen Management System - Demo</title>
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+    <style>
+        /* Custom Styles */
+        body {
+            padding-top: 95px;
+            background-color: #f8f9fa;
+        }
+
+        .demo-banner {
+            background: linear-gradient(135deg, #ffc107 0%, #ff9800 100%);
+            color: #000;
+            padding: 12px;
+            text-align: center;
+            font-weight: bold;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 10000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+
+        .top-navbar {
+            position: fixed;
+            top: 45px;
+            left: 0;
+            right: 0;
+            z-index: 1030;
+        }
+
+        .sidebar {
+            position: fixed;
+            top: 105px;
+            bottom: 0;
+            left: 0;
+            z-index: 100;
+            padding: 20px 0;
+            box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
+            background-color: #f8f9fa;
+            overflow-y: auto;
+        }
+
+        .sidebar .nav-link {
+            font-weight: 500;
+            color: #333;
+            padding: 0.75rem 1rem;
+            border-radius: 0.25rem;
+            margin: 0.1rem 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar .nav-link:hover {
+            background-color: #e9ecef;
+            color: #0d6efd;
+        }
+
+        .sidebar .nav-link.active {
+            color: #fff;
+            background-color: #0d6efd;
+        }
+
+        .sidebar .nav-link i {
+            margin-right: 8px;
+        }
+
+        .main-content {
+            margin-left: 250px;
+            padding: 20px;
+        }
+
+        .card {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+        }
+
+        .border-left-primary {
+            border-left: 4px solid #0d6efd !important;
+        }
+
+        .border-left-success {
+            border-left: 4px solid #198754 !important;
+        }
+
+        .border-left-info {
+            border-left: 4px solid #0dcaf0 !important;
+        }
+
+        .border-left-warning {
+            border-left: 4px solid #ffc107 !important;
+        }
+
+        .text-xs {
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                position: relative;
+                top: 0;
+            }
+            .main-content {
+                margin-left: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Demo Banner -->
+    <div class="demo-banner">
+        <i class="bi bi-exclamation-triangle-fill"></i>
+        <strong>STANDALONE DEMO</strong> - This is a preview of the Canteen Management System interface with sample data
+    </div>
+
+    <!-- Top Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary top-navbar">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">
+                <i class="bi bi-building"></i>
+                <strong>YUCMS</strong> - Yangtze University
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            <i class="bi bi-bell"></i>
+                            <span class="badge bg-danger">1</span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><h6 class="dropdown-header">Notifications</h6></li>
+                            <li><a class="dropdown-item" href="#"><i class="bi bi-exclamation-triangle text-warning"></i> 1 package expiring soon</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            <i class="bi bi-person-circle"></i> Demo Administrator
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="#"><i class="bi bi-person"></i> My Profile</a></li>
+                            <li><a class="dropdown-item" href="#"><i class="bi bi-gear"></i> Settings</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item text-danger" href="#"><i class="bi bi-box-arrow-right"></i> Logout</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <nav class="col-md-3 col-lg-2 sidebar">
+                <div class="position-sticky">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#dashboard">
+                                <i class="bi bi-speedometer2"></i>
+                                Dashboard
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#students">
+                                <i class="bi bi-people"></i>
+                                Students
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#packages">
+                                <i class="bi bi-box-seam"></i>
+                                Packages
+                                <span class="badge bg-warning text-dark ms-2">1</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#payments">
+                                <i class="bi bi-cash-stack"></i>
+                                Payments
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#reports">
+                                <i class="bi bi-file-earmark-text"></i>
+                                Reports
+                            </a>
+                        </li>
+                        <li class="nav-item mt-3">
+                            <a class="nav-link" href="#settings">
+                                <i class="bi bi-gear"></i>
+                                Settings
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+
+            <!-- Main Content -->
+            <main class="col-md-9 ms-sm-auto col-lg-10 main-content">
+                <!-- Page Header -->
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+                    <h1 class="h2"><i class="bi bi-speedometer2"></i> Dashboard</h1>
+                    <div class="btn-toolbar">
+                        <button type="button" class="btn btn-sm btn-outline-secondary" onclick="location.reload()">
+                            <i class="bi bi-arrow-clockwise"></i> Refresh
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Metrics Cards -->
+                <div class="row mb-4">
+                    <div class="col-xl-3 col-md-6 mb-3">
+                        <div class="card border-left-primary h-100">
+                            <div class="card-body">
+                                <div class="row align-items-center">
+                                    <div class="col">
+                                        <div class="text-xs text-primary mb-1">Active Packages</div>
+                                        <div class="h3 mb-0 font-weight-bold text-gray-800">2</div>
+                                    </div>
+                                    <div class="col-auto">
+                                        <i class="bi bi-box-seam text-primary" style="font-size: 2rem;"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xl-3 col-md-6 mb-3">
+                        <div class="card border-left-success h-100">
+                            <div class="card-body">
+                                <div class="row align-items-center">
+                                    <div class="col">
+                                        <div class="text-xs text-success mb-1">Total Students</div>
+                                        <div class="h3 mb-0 font-weight-bold text-gray-800">3</div>
+                                    </div>
+                                    <div class="col-auto">
+                                        <i class="bi bi-people text-success" style="font-size: 2rem;"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xl-3 col-md-6 mb-3">
+                        <div class="card border-left-info h-100">
+                            <div class="card-body">
+                                <div class="row align-items-center">
+                                    <div class="col">
+                                        <div class="text-xs text-info mb-1">Revenue This Month</div>
+                                        <div class="h3 mb-0 font-weight-bold text-gray-800">¥ 1,560.00</div>
+                                    </div>
+                                    <div class="col-auto">
+                                        <i class="bi bi-currency-dollar text-info" style="font-size: 2rem;"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xl-3 col-md-6 mb-3">
+                        <div class="card border-left-warning h-100">
+                            <div class="card-body">
+                                <div class="row align-items-center">
+                                    <div class="col">
+                                        <div class="text-xs text-warning mb-1">Expiring This Week</div>
+                                        <div class="h3 mb-0 font-weight-bold text-gray-800">1</div>
+                                    </div>
+                                    <div class="col-auto">
+                                        <i class="bi bi-exclamation-triangle text-warning" style="font-size: 2rem;"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Second Row of Metrics -->
+                <div class="row mb-4">
+                    <div class="col-xl-3 col-md-6 mb-3">
+                        <div class="card border-primary">
+                            <div class="card-body text-center">
+                                <h6 class="text-primary">Full Packages (500 RMB)</h6>
+                                <h2 class="mb-0">1</h2>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-md-6 mb-3">
+                        <div class="card border-secondary">
+                            <div class="card-body text-center">
+                                <h6 class="text-secondary">Single Packages (280 RMB)</h6>
+                                <h2 class="mb-0">1</h2>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-md-6 mb-3">
+                        <div class="card border-success">
+                            <div class="card-body text-center">
+                                <h6 class="text-success">Total Revenue</h6>
+                                <h2 class="mb-0">¥ 3,280.00</h2>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-md-6 mb-3">
+                        <div class="card border-info">
+                            <div class="card-body text-center">
+                                <h6 class="text-info">New Students This Month</h6>
+                                <h2 class="mb-0">2</h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Expiring Packages Alert -->
+                <div class="alert alert-danger shadow" role="alert">
+                    <h4 class="alert-heading">
+                        <i class="bi bi-exclamation-triangle-fill"></i> Urgent: Packages Expiring Soon!
+                    </h4>
+                    <p>There is <strong>1</strong> package expiring within the next 7 days. Please contact this student for renewal.</p>
+                    <hr>
+                    <div class="table-responsive">
+                        <table class="table table-sm table-hover mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Student</th>
+                                    <th>Passport</th>
+                                    <th>WeChat</th>
+                                    <th>Phone</th>
+                                    <th>Package</th>
+                                    <th>Days Left</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="table-warning">
+                                    <td><strong>Maria Garcia</strong></td>
+                                    <td>P23456789</td>
+                                    <td>maria_wx</td>
+                                    <td>+3456789012</td>
+                                    <td>Single Package (Brunch)</td>
+                                    <td><span class="badge bg-danger">4 days</span></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-primary" onclick="alert('Demo: This would open student profile')">
+                                            <i class="bi bi-eye"></i> View
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Charts Row -->
+                <div class="row mb-4">
+                    <!-- Monthly Revenue Chart -->
+                    <div class="col-lg-6 mb-3">
+                        <div class="card">
+                            <div class="card-header bg-primary text-white">
+                                <h5 class="mb-0"><i class="bi bi-graph-up"></i> Monthly Revenue Trend</h5>
+                            </div>
+                            <div class="card-body">
+                                <canvas id="revenueChart" height="200"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Package Distribution Chart -->
+                    <div class="col-lg-6 mb-3">
+                        <div class="card">
+                            <div class="card-header bg-success text-white">
+                                <h5 class="mb-0"><i class="bi bi-pie-chart"></i> Package Distribution</h5>
+                            </div>
+                            <div class="card-body">
+                                <canvas id="packageChart" height="200"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="row mb-4">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-header bg-secondary text-white">
+                                <h5 class="mb-0"><i class="bi bi-lightning"></i> Quick Actions</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-3 mb-2">
+                                        <button class="btn btn-primary w-100" onclick="showDemo('Add Student')">
+                                            <i class="bi bi-person-plus"></i> Add New Student
+                                        </button>
+                                    </div>
+                                    <div class="col-md-3 mb-2">
+                                        <button class="btn btn-success w-100" onclick="showDemo('Add Package')">
+                                            <i class="bi bi-box-seam"></i> Add New Package
+                                        </button>
+                                    </div>
+                                    <div class="col-md-3 mb-2">
+                                        <button class="btn btn-info w-100" onclick="showDemo('View Reports')">
+                                            <i class="bi bi-file-earmark-text"></i> View Reports
+                                        </button>
+                                    </div>
+                                    <div class="col-md-3 mb-2">
+                                        <button class="btn btn-warning w-100" onclick="showDemo('View Students')">
+                                            <i class="bi bi-people"></i> View All Students
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Activities -->
+                <div class="row mb-4">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-header bg-dark text-white">
+                                <h5 class="mb-0"><i class="bi bi-clock-history"></i> Recent Activities</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-sm table-hover mb-0">
+                                        <thead>
+                                            <tr>
+                                                <th>User</th>
+                                                <th>Action</th>
+                                                <th>Description</th>
+                                                <th>Time</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>Admin</td>
+                                                <td><span class="badge bg-success">CREATE</span></td>
+                                                <td>Created package PKG-20251101-001 for John Smith</td>
+                                                <td class="text-muted"><small>1 Nov 2025 10:30</small></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Admin</td>
+                                                <td><span class="badge bg-success">CREATE</span></td>
+                                                <td>Created package PKG-20251101-002 for Maria Garcia</td>
+                                                <td class="text-muted"><small>1 Nov 2025 10:15</small></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Admin</td>
+                                                <td><span class="badge bg-info">CREATE</span></td>
+                                                <td>Added new student: Ahmed Hassan</td>
+                                                <td class="text-muted"><small>1 Nov 2025 09:45</small></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Admin</td>
+                                                <td><span class="badge bg-primary">LOGIN</span></td>
+                                                <td>User logged in successfully</td>
+                                                <td class="text-muted"><small>1 Nov 2025 09:00</small></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Demo Information -->
+                <div class="alert alert-info">
+                    <h5><i class="bi bi-info-circle"></i> Demo Information</h5>
+                    <p><strong>This is a standalone HTML demo</strong> showing the Canteen Management System interface with sample data.</p>
+                    <ul class="mb-0">
+                        <li>All buttons and links are interactive but show demo alerts</li>
+                        <li>Charts display sample data</li>
+                        <li>For full functionality, deploy the complete system with MySQL database</li>
+                        <li>See <strong>README.md</strong> for deployment instructions</li>
+                    </ul>
+                </div>
+
+            </main>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-light text-center mt-5" style="margin-left: 250px;">
+        <div class="p-3">
+            &copy; 2025 Yangtze University. All rights reserved. | <strong>Canteen Management System</strong> v1.0.0 | DEMO MODE
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Demo JavaScript -->
+    <script>
+        // Demo function
+        function showDemo(action) {
+            alert('Demo Mode: This would open the "' + action + '" page.\n\nIn the full system:\n- Complete forms with validation\n- Real database operations\n- File uploads\n- Data persistence\n\nDeploy to see all features!');
+        }
+
+        // Monthly Revenue Chart
+        const revenueCtx = document.getElementById('revenueChart').getContext('2d');
+        new Chart(revenueCtx, {
+            type: 'line',
+            data: {
+                labels: ['June', 'July', 'August', 'September', 'October', 'November'],
+                datasets: [{
+                    label: 'Revenue (RMB)',
+                    data: [1200, 1800, 1500, 2100, 1900, 1560],
+                    borderColor: 'rgb(13, 110, 253)',
+                    backgroundColor: 'rgba(13, 110, 253, 0.1)',
+                    tension: 0.4,
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'top'
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value) {
+                                return '¥ ' + value.toLocaleString();
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // Package Distribution Chart
+        const packageCtx = document.getElementById('packageChart').getContext('2d');
+        new Chart(packageCtx, {
+            type: 'pie',
+            data: {
+                labels: ['Full Package (500 RMB)', 'Single Package (280 RMB)'],
+                datasets: [{
+                    data: [1, 1],
+                    backgroundColor: [
+                        'rgba(13, 110, 253, 0.8)',
+                        'rgba(25, 135, 84, 0.8)'
+                    ],
+                    borderWidth: 2,
+                    borderColor: '#fff'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'right'
+                    }
+                }
+            }
+        });
+
+        // Add click handlers for sidebar
+        document.querySelectorAll('.sidebar .nav-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                if (this.getAttribute('href').startsWith('#') && !this.classList.contains('active')) {
+                    e.preventDefault();
+                    const target = this.getAttribute('href').substring(1);
+                    showDemo(target.charAt(0).toUpperCase() + target.slice(1));
+                }
+            });
+        });
+    </script>
+</body>
+</html>
