@@ -1,0 +1,22 @@
+{
+    "name": "yangtze/homekitchen",
+    "description": "Yangtze University Canteen Management System",
+    "type": "project",
+    "license": "proprietary",
+    "require": {
+        "php": "^8.0",
+        "ext-pdo": "*",
+        "ext-pdo_mysql": "*",
+        "ext-mbstring": "*",
+        "ext-gd": "*",
+        "ext-fileinfo": "*"
+    },
+    "scripts": {
+        "start": "cd canteen-management && php -S 0.0.0.0:${PORT:-8080} -t ."
+    },
+    "config": {
+        "platform": {
+            "php": "8.2"
+        }
+    }
+}
