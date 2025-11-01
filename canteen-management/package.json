@@ -1,0 +1,13 @@
+{
+  "name": "canteen-management-demo",
+  "version": "1.0.0",
+  "description": "Yangtze University Canteen Management System - Static Demo",
+  "main": "index.html",
+  "scripts": {
+    "start": "serve .",
+    "build": "echo 'Static site - no build needed'"
+  },
+  "keywords": ["canteen", "management", "demo"],
+  "author": "Yangtze University",
+  "license": "ISC"
+}
