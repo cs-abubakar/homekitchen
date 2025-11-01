@@ -1,0 +1,42 @@
+version: 1
+
+# Shipit Configuration for PHP + MySQL App
+name: canteen-management
+type: php
+
+# Build configuration
+build:
+  runtime: php-8.2
+  buildCommand: |
+    echo "Installing PHP dependencies..."
+    composer install --no-dev --optimize-autoloader || echo "No composer dependencies"
+    echo "Build complete!"
+
+# Runtime configuration
+run:
+  command: php -S 0.0.0.0:$PORT -t .
+
+# Environment variables (set these in your platform dashboard)
+env:
+  APP_ENV: production
+  APP_NAME: "Yangtze University Canteen Management System"
+  # Database credentials - SET THESE IN PLATFORM DASHBOARD
+  # DB_HOST: your-mysql-host
+  # DB_NAME: canteen_management
+  # DB_USER: your-mysql-user
+  # DB_PASS: your-mysql-password
+  # DB_PORT: 3306
+
+# Health check
+healthCheck:
+  path: /
+  interval: 30
+  timeout: 10
+
+# PHP extensions required
+extensions:
+  - pdo
+  - pdo_mysql
+  - mbstring
+  - gd
+  - fileinfo

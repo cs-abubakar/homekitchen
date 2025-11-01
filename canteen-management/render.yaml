@@ -1,0 +1,27 @@
+services:
+  - type: web
+    name: canteen-management
+    env: php
+    runtime: php
+    buildCommand: composer install --no-dev --optimize-autoloader || echo "No dependencies"
+    startCommand: php -S 0.0.0.0:$PORT -t .
+    healthCheckPath: /
+    envVars:
+      - key: APP_ENV
+        value: production
+      - key: APP_NAME
+        value: Yangtze University Canteen Management System
+      # Add these in Render dashboard:
+      # - key: DB_HOST
+      #   sync: false
+      # - key: DB_NAME
+      #   sync: false
+      # - key: DB_USER
+      #   sync: false
+      # - key: DB_PASS
+      #   sync: false
+
+databases:
+  - name: canteen-db
+    databaseName: canteen_management
+    user: canteen_user
