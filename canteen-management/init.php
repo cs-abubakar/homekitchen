@@ -106,7 +106,7 @@ define('DB_CHARSET', 'utf8mb4');
 // Application constants
 define('APP_NAME', 'Yangtze University Canteen Management System');
 define('APP_SHORT_NAME', 'YUCMS');
-define('APP_VERSION', '2.0.0');
+define('APP_VERSION', '3.0.0'); // No authentication version
 define('UNIVERSITY_NAME', 'Yangtze University');
 
 // File upload settings

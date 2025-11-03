@@ -60,30 +60,13 @@ try {
                     </ul>
                 </li>
 
-                <!-- User Profile -->
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown">
+                <!-- System Info (v3.0.0 - No Authentication) -->
+                <li class="nav-item">
+                    <span class="nav-link">
                         <i class="bi bi-person-circle"></i>
-                        <?php echo htmlspecialchars(getCurrentUserFullName() ?? getCurrentUsername()); ?>
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-end">
-                        <li>
-                            <a class="dropdown-item" href="<?php echo BASE_URL; ?>settings/profile.php">
-                                <i class="bi bi-person"></i> My Profile
-                            </a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item" href="<?php echo BASE_URL; ?>settings/system.php">
-                                <i class="bi bi-gear"></i> Settings
-                            </a>
-                        </li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li>
-                            <a class="dropdown-item text-danger" href="<?php echo BASE_URL; ?>auth/logout.php">
-                                <i class="bi bi-box-arrow-right"></i> Logout
-                            </a>
-                        </li>
-                    </ul>
+                        <?php echo htmlspecialchars(getCurrentUserFullName()); ?>
+                        <span class="badge bg-success ms-2">v<?php echo APP_VERSION; ?></span>
+                    </span>
                 </li>
             </ul>
         </div>
@@ -189,8 +172,7 @@ try {
                         </ul>
                     </li>
 
-                    <!-- Settings -->
-                    <?php if (isAdmin()): ?>
+                    <!-- Settings (v3.0.0 - Always visible, no auth required) -->
                     <li class="nav-item">
                         <a class="nav-link <?php echo ($currentDir === 'settings') ? 'active' : ''; ?>" href="#settingsSubmenu" data-bs-toggle="collapse">
                             <i class="bi bi-gear"></i>
@@ -199,23 +181,12 @@ try {
                         </a>
                         <ul class="collapse nav flex-column ms-3 <?php echo ($currentDir === 'settings') ? 'show' : ''; ?>" id="settingsSubmenu">
                             <li class="nav-item">
-                                <a class="nav-link" href="<?php echo BASE_URL; ?>settings/profile.php">
-                                    <i class="bi bi-person"></i> My Profile
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="<?php echo BASE_URL; ?>settings/users.php">
-                                    <i class="bi bi-people"></i> Manage Users
-                                </a>
-                            </li>
-                            <li class="nav-item">
                                 <a class="nav-link" href="<?php echo BASE_URL; ?>settings/system.php">
                                     <i class="bi bi-sliders"></i> System Settings
                                 </a>
                             </li>
                         </ul>
                     </li>
-                    <?php endif; ?>
                 </ul>
             </div>
         </nav>
