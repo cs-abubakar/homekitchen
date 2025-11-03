@@ -4,10 +4,10 @@
  * Canteen Management System - Yangtze University
  */
 
-require_once '../config/config.php';
-require_once '../config/database.php';
-require_once '../config/session.php';
-require_once '../includes/functions.php';
+require_once __DIR__ . '/../init.php';
+require_once __DIR__ . '/../config/database.php';
+require_once __DIR__ . '/../config/session.php';
+require_once __DIR__ . '/../includes/functions.php';
 
 // Check if form was submitted
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -92,4 +92,3 @@ try {
     header('Location: ' . BASE_URL . 'index.php?error=system_error');
     exit;
 }
-?>

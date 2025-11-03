@@ -4,7 +4,7 @@
  * Canteen Management System - Yangtze University
  */
 
-require_once 'config/config.php';
+require_once 'init.php';
 require_once 'config/session.php';
 
 // If user is already logged in, redirect to dashboard
@@ -26,6 +26,12 @@ switch ($error) {
         break;
     case 'unauthorized':
         $errorMessage = 'Please login to access this page';
+        break;
+    case 'account_disabled':
+        $errorMessage = 'Your account has been disabled. Please contact administrator.';
+        break;
+    case 'system_error':
+        $errorMessage = 'A system error occurred. Please try again later.';
         break;
 }
 ?>
@@ -76,6 +82,11 @@ switch ($error) {
             font-size: 16px;
             font-weight: 600;
         }
+        .system-info {
+            font-size: 11px;
+            color: rgba(255,255,255,0.8);
+            margin-top: 15px;
+        }
     </style>
 </head>
 <body>
@@ -86,6 +97,9 @@ switch ($error) {
                     <i class="bi bi-building" style="font-size: 48px;"></i>
                     <h3 class="mt-3"><?php echo UNIVERSITY_NAME; ?></h3>
                     <p class="mb-0">Canteen Management System</p>
+                    <div class="system-info">
+                        v<?php echo APP_VERSION; ?> | <?php echo IS_MACOS ? 'macOS' : 'Other OS'; ?> | PHP <?php echo PHP_VERSION; ?>
+                    </div>
                 </div>
 
                 <div class="login-body">
@@ -102,19 +116,19 @@ switch ($error) {
                             <label for="username" class="form-label">
                                 <i class="bi bi-person"></i> Username
                             </label>
-                            <input type="text" class="form-control form-control-lg" id="username" name="username" required autofocus>
+                            <input type="text" class="form-control form-control-lg" id="username" name="username" required autofocus autocomplete="username">
                         </div>
 
                         <div class="mb-3">
                             <label for="password" class="form-label">
                                 <i class="bi bi-lock"></i> Password
                             </label>
-                            <input type="password" class="form-control form-control-lg" id="password" name="password" required>
+                            <input type="password" class="form-control form-control-lg" id="password" name="password" required autocomplete="current-password">
                         </div>
 
                         <div class="mb-3 form-check">
                             <input type="checkbox" class="form-check-input" id="remember" name="remember">
-                            <label class="form-check-label" for="remember">
+                            <label class="form-check-input" for="remember">
                                 Remember me
                             </label>
                         </div>

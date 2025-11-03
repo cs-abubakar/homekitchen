@@ -2,18 +2,9 @@
 /**
  * Session Management
  * Canteen Management System - Yangtze University
+ *
+ * Note: Session is already started in init.php
  */
-
-// Ensure session is started
-if (session_status() === PHP_SESSION_NONE) {
-    // Configure session settings for security
-    ini_set('session.cookie_httponly', 1);
-    ini_set('session.use_only_cookies', 1);
-    ini_set('session.cookie_secure', 0); // Set to 1 if using HTTPS
-    ini_set('session.cookie_samesite', 'Strict');
-
-    session_start();
-}
 
 /**
  * Check if user is logged in
@@ -198,5 +189,3 @@ function getFlashMessage() {
 function hasFlashMessage() {
     return isset($_SESSION['flash_message']);
 }
-
-?>
